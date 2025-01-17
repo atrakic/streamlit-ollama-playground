@@ -2,30 +2,18 @@ services:
   ollama:
     image: ollama/ollama:latest
     container_name: ollama
-    tty: true
     env_file:
       - .env
     environment:
-      - OLLAMA_ORIGINS="*"
-      - OLLAMA_HOST=0.0.0.0
-      - OLAMA_MODEL=${OLAMA_MODEL:?"OLAMA_MODEL is required"}
-    entrypoint:
-      - /bin/bash
-      - -c
-      - |
-        /bin/ollama serve &
-        # Record Process ID
-        pid=$!
-        # Wait for the server to start
-        sleep 5
-        # Pull the model
-        /bin/ollama pull $${OLAMA_MODEL}
-        # Wait for Ollama process to finish
-        wait $$pid
+      - TEXT_EMBEDDING_MODEL=${TEXT_EMBEDDING_MODEL:?"Error TEXT_EMBEDDING_MODEL is required"}
+    entrypoint: ["/bin/bash", "-c"]
+    command: >
+      "ollama serve &
+      pid=$!
+      sleep 5 &&
+      /bin/ollama pull $${TEXT_EMBEDDING_MODEL} &&
+      wait $$pid"
     volumes:
       - ollama:/root/.ollama
-
 volumes:
   ollama:
-  qdrant_data:
-

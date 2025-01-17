@@ -1,1 +1,1 @@
-# streamlit-ollama-light-rag-app 
+# streamlit-ollama-rag-app
