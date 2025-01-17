@@ -4,6 +4,8 @@ services:
     container_name: app
     environment:
       - OLLAMA_HOST=http://ollama:11434
+    volumes:
+      - ${PWD}/pages:/app/pages:rw
     ports:
       - 8501:8501
     depends_on:
