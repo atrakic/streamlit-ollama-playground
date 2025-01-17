@@ -46,7 +46,7 @@ def display_results(data, prompt):
 
 
 def main():
-    st.title("Use embedding models with Ollama API and ChromaDB")
+    st.title("ChromaDB embedding with Ollama API")
 
     client = chromadb.Client()
     collection = client.get_or_create_collection(name="docs")

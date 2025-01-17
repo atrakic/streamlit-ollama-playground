@@ -11,7 +11,8 @@ services:
       "ollama serve &
       pid=$!
       sleep 5 &&
-      /bin/ollama pull $${TEXT_EMBEDDING_MODEL} &&
+      ollama pull llama3.2:latest &&
+      ollama pull $${TEXT_EMBEDDING_MODEL} &&
       wait $$pid"
     volumes:
       - ollama:/root/.ollama
