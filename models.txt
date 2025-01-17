@@ -1,0 +1,2 @@
+all-minilm
+llama3.2

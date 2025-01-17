@@ -1,20 +1,23 @@
 services:
+  app:
+    build: .
+    container_name: app
+    ports:
+      - 8501:8501
+    depends_on:
+      - ollama
   ollama:
     image: ollama/ollama:latest
     container_name: ollama
-    env_file:
-      - .env
-    environment:
-      - TEXT_EMBEDDING_MODEL=${TEXT_EMBEDDING_MODEL:?"Error TEXT_EMBEDDING_MODEL is required"}
     entrypoint: ["/bin/bash", "-c"]
     command: >
       "ollama serve &
       pid=$!
       sleep 5 &&
-      ollama pull llama3.2:latest &&
-      ollama pull $${TEXT_EMBEDDING_MODEL} &&
+      while read -r line; do ollama pull "$$line"; done < /models.txt &&
       wait $$pid"
     volumes:
+      - ${PWD}/models.txt:/models.txt
       - ollama:/root/.ollama
 volumes:
   ollama:

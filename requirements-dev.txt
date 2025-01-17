@@ -1,5 +1,4 @@
-black
-mypy
+-r requirements.txt
 pre-commit
-watchdog
-pytest
+ruff
+black
