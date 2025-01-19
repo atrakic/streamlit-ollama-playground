@@ -27,11 +27,9 @@ def generate_response(prompt):
 
 
 def main():
-    st.set_page_config(page_title="LLamaIndex basic LLM chat app demo")
-    st.markdown("# LLamaIndex basic LLM chat app demo")
-    st.write(
-        """This demo shows how to use
-    [`llama-index`](https://github.com/run-llama/llama_index) with Ollama API to create a basic LLM chat app."""
+    st.title("LLamaIndex basic LLM chat app demo")
+    st.markdown(
+        "This demo shows how to use [llama-index](https://github.com/run-llama/llama_index) with Ollama API to create a basic LLM chat app."
     )
     st.markdown(
         "Enter a message to chat with the assistant. Example: *What is the capital of France?*, * 3 ^ 3 *"

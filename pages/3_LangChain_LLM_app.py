@@ -12,8 +12,21 @@ load_dotenv()
 OLLAMA_MODEL = os.environ.get("OLLAMA_MODEL", "llama3.2")
 
 
+@st.cache_resource
+def get_llm():
+    return OllamaLLM(
+        model=OLLAMA_MODEL,
+        temperature=0,
+    )
+
+
+@st.cache_data
+def generate_response(text):
+    llm = get_llm()
+    return llm.invoke(text)
+
+
 def main():
-    st.set_page_config(page_title="LLamaIndex app demo")
     st.title("🦜🔗 Langchain app demo")
     st.write(
         """This demo shows how to use
@@ -28,14 +41,8 @@ def main():
 
         submitted = st.form_submit_button("Submit")
 
-        llm = OllamaLLM(
-            model=OLLAMA_MODEL,
-            temperature=0,
-            # other params...
-        )
-
         if submitted:
-            response = llm.invoke(text)
+            response = generate_response(text)
             st.write(response)
 
 

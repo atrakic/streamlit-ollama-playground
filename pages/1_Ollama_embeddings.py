@@ -46,11 +46,9 @@ def display_results(data, prompt):
 
 
 def main():
-    st.set_page_config(page_title="Ollama embeddings demo")
-    st.markdown("# Ollama embeddings demo")
-    st.write(
-        """This demo shows how to use Ollama embedding models
-        with [`chromadb`](https://github.com/chroma-core/chroma) as vector database."""
+    st.title("Ollama embeddings demo")
+    st.markdown(
+        "This demo shows how to use Ollama embedding models with [chromadb](https://github.com/chroma-core/chroma) as vector database."
     )
 
     prompt = st.text_input(
