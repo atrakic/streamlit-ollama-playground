@@ -1,6 +1,6 @@
-# streamlit-ollama-rag-apps
+# streamlit-ollama-playground
 
-[![Python checks](https://github.com/atrakic/streamlit-ollama-rag-apps/actions/workflows/python.yaml/badge.svg)](https://github.com/atrakic/streamlit-ollama-rag-apps/actions/workflows/python.yaml)
+[![Python checks](https://github.com/atrakic/streamlit-ollama-playground/actions/workflows/python.yaml/badge.svg)](https://github.com/atrakic/streamlit-ollama-playground/actions/workflows/python.yaml)
 
 
 # About this playground
