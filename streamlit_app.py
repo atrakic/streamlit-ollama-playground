@@ -1,11 +1,16 @@
 import streamlit as st
+import asyncio
 
-st.title("Ollama Streamlit Apps")
 
-st.sidebar.success("Select a demo above.")
-
-st.markdown(
+async def main():
+    st.title("Ollama Streamlit Apps")
+    st.sidebar.success("Select a demo above.")
+    st.markdown(
+        """
+    - [View the source code](https://github.com/atrakic/streamlit-ollama-playground.git)
     """
-- [View the source code](https://github.com/atrakic/streamlit-ollama-playground.git)
-"""
-)
+    )
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
