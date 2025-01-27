@@ -1,7 +1,13 @@
 """
+## Streamlit app to demonstrate the usage of pgvector for vector similarity search
+
+
+## Run the following commands to install the required packages
 openai
 pgvector
 psycopg[binary]
+
+Addapted from: https://www.timescale.com/blog/build-a-fully-local-rag-app-with-postgresql-mistral-and-ollama
 """
 
 import streamlit as st
@@ -40,9 +46,9 @@ def setup_db(size):
 
 
 def main():
-    st.title("Ollama + pgvector demo")
+    st.title("PGvector demo")
     st.markdown(
-        "RAG knowledge base using [pgvector](https://github.com/pgvector/pgvector) for vector similarity search with Ollama API."
+        "Local RAG knowledge base using [pgvector](https://github.com/pgvector/pgvector) for vector similarity search powered by PostgreSQL and Ollama."
     )
     st.image(
         "https://github.com/timescale/private-rag-example/blob/main/Architecture%20%20of%20Private%20RAG%20Application.png?raw=true"
@@ -80,11 +86,12 @@ def main():
     if user_input:
         st.session_state.messages.append({"type": "user", "content": user_input})
 
-        # Retrieve relevant documents based on cosine distance(<=>)
-        # https://github.com/pgvector/pgvector?tab=readme-ov-file#querying
+        # Embed the user input
         user_embedding = client.embed(model=TEXT_EMBEDDING_MODEL, input=[user_input])[
             "embeddings"
         ][0]
+
+        # Retrieve relevant documents based on cosine distance
         result = conn.execute(
             """
             SELECT content, 1 - (embedding <=> %s::vector) AS similarity
