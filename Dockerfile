@@ -1,5 +1,7 @@
 FROM python:3.12-slim AS base
 ARG UV_VERSION=0.5.7
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
 RUN adduser --system --no-create-home nonroot
 
 FROM base AS builder
@@ -10,6 +12,7 @@ ENV PATH="/opt/venv/bin:$PATH"
 WORKDIR /app
 COPY uv.lock pyproject.toml ./
 RUN uv pip install -r pyproject.toml
+
 
 FROM base AS final
 WORKDIR /app
