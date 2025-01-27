@@ -10,6 +10,18 @@ services:
       - 8501:8501
     depends_on:
       - ollama
+      - pgvector
+  # docker compose exec -it pgvector psql -hpgvector -dollama -U postgres -c"\dx"
+  pgvector:
+    image: pgvector/pgvector:pg17
+    container_name: pgvector
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=ollama
+      # allow all connections
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    ports:
+      - 5432:5432
   ollama:
     image: ollama/ollama:latest
     container_name: ollama
