@@ -1,11 +1,14 @@
+# /// script
+# requires-python = ">=3.11"
+# dependencies = [
+#   "openai",
+#   "pgvector",
+#   "psycopg[binary]"
+# ]
+# ///
+
 """
 ## Streamlit app to demonstrate the usage of pgvector for vector similarity search
-
-
-## Run the following commands to install the required packages
-openai
-pgvector
-psycopg[binary]
 
 Addapted from: https://www.timescale.com/blog/build-a-fully-local-rag-app-with-postgresql-mistral-and-ollama
 """
