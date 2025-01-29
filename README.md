@@ -4,7 +4,7 @@
 
 
 # About this playground
-This project objective is try out different large language models (LLM) with all its dependencies locally in a containerized environment.
+This project objective is try out different large language models (LLM) and frameworks with all its dependenciesin a containerized environment.
 
 
 ## Local development

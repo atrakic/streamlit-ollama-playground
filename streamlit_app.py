@@ -7,7 +7,7 @@
 # ///
 
 import streamlit as st
-import asyncio
+import streamlit.web.bootstrap
 
 
 async def main():
@@ -21,4 +21,9 @@ async def main():
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    # See: https://bartbroere.eu/2023/06/17/adding-a-main-to-streamlit/
+    if "__streamlitmagic__" not in locals():
+        import streamlit.web.bootstrap
+
+        streamlit.web.bootstrap.run(__file__, False, [], {})
+        asyncio.run(main())
