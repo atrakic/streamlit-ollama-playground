@@ -25,6 +25,7 @@ load_dotenv()
 TEXT_EMBEDDING_MODEL = os.environ.get("TEXT_EMBEDDING_MODEL", "all-minilm")  # 45 MB
 
 
+@st.cache_resource
 def setup_db(size):
     """Setup the database and create the documents table"""
     conn = psycopg.connect(
@@ -48,6 +49,15 @@ def setup_db(size):
     return conn
 
 
+@st.cache_resource
+def setup(input_data):
+    client = ollama.Client()
+    response = client.embed(model=TEXT_EMBEDDING_MODEL, input=input_data)
+    embedding_size = len(response["embeddings"][0])
+    conn = setup_db(embedding_size)
+    return client, conn, response
+
+
 def main():
     st.title("PGvector demo")
     st.markdown(
@@ -58,19 +68,6 @@ def main():
     )
 
     sample_data = ["The dog is barking", "The cat is purring", "The bear is growling"]
-
-    # Embed the input data and setup the database
-    client = ollama.Client()
-    response = client.embed(model=TEXT_EMBEDDING_MODEL, input=sample_data)
-    embedding_size = len(response["embeddings"][0])
-    conn = setup_db(embedding_size)
-
-    ## Insert the data and embeddings into the database
-    for content, embedding in zip(sample_data, response["embeddings"]):
-        conn.execute(
-            "INSERT INTO documents (content, embedding) VALUES (%s, %s)",
-            (content, embedding),
-        )
 
     ## Chat UI
 
@@ -88,6 +85,16 @@ def main():
 
     if user_input:
         st.session_state.messages.append({"type": "user", "content": user_input})
+
+        # Embed the input data and setup the database
+        client, conn, response = setup(sample_data)
+
+        ## Insert the data and embeddings into the database
+        for content, embedding in zip(sample_data, response["embeddings"]):
+            conn.execute(
+                "INSERT INTO documents (content, embedding) VALUES (%s, %s)",
+                (content, embedding),
+            )
 
         # Embed the user input
         user_embedding = client.embed(model=TEXT_EMBEDDING_MODEL, input=[user_input])[
