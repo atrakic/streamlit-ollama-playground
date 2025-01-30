@@ -10,7 +10,7 @@ import streamlit as st
 import streamlit.web.bootstrap
 
 
-async def main():
+def main():
     st.title("Ollama Streamlit Apps")
     st.sidebar.success("Select a demo above.")
     st.markdown(
@@ -23,7 +23,5 @@ async def main():
 if __name__ == "__main__":
     # See: https://bartbroere.eu/2023/06/17/adding-a-main-to-streamlit/
     if "__streamlitmagic__" not in locals():
-        import streamlit.web.bootstrap
-
         streamlit.web.bootstrap.run(__file__, False, [], {})
-        asyncio.run(main())
+    main()
