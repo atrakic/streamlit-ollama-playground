@@ -7,11 +7,10 @@ services:
     volumes:
       - ${PWD}/pages:/app/pages:rw
     ports:
-      - 8501:8501
+      - 8502:8501
     depends_on:
       - ollama
       - pgvector
-  # docker compose exec -it pgvector psql -hpgvector -dollama -U postgres -c"\dx"
   pgvector:
     image: pgvector/pgvector:pg17
     container_name: pgvector
@@ -22,22 +21,43 @@ services:
       - POSTGRES_HOST_AUTH_METHOD=trust
     ports:
       - 5432:5432
+    tmpfs:
+      - /var/lib/postgresql/data
+  pgvector-init:
+    image: pgvector/pgvector:pg17
+    container_name: pgvector-init
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=ollama
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    entrypoint: ["/bin/bash", "-c"]
+    command: >
+      "sleep 3; psql -hpgvector -Upostgres -c'CREATE EXTENSION IF NOT EXISTS vector;'"
+    depends_on:
+      - pgvector
   ollama:
     image: ollama/ollama:latest
     container_name: ollama
     environment:
       - OLLAMA_HOST=0.0.0.0
+    ports:
+      - 11435:11434
+    volumes:
+      - ollama:/root/.ollama
+    tmpfs:
+      - /var/lib/postgresql/data
+  ollama-sync:
+    image: ollama/ollama:latest
+    container_name: ollama-sync
+    environment:
+      - OLLAMA_HOST=ollama:11434
     entrypoint: ["/bin/bash", "-c"]
     command: >
-      "ollama serve &
-      pid=$!
-      sleep 5 &&
-      while read -r line; do ollama pull "$$line"; done < /models.txt &&
-      wait $$pid"
+      "sleep 3; while read -r line; do ollama pull $$line; done < /models.txt"
     volumes:
       - ${PWD}/models.txt:/models.txt
       - ollama:/root/.ollama
-    ports:
-      - 11434:11434
+    depends_on:
+      - ollama
 volumes:
   ollama:
