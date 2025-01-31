@@ -17,6 +17,19 @@ dependencies = [
     "ollama>=0.4.5",
     "pgvector>=0.3.6",
     "psycopg[binary]>=3.2.4",
+    "pydantic>=2.10.5",
+    "pydantic-settings>=2.7.1",
     "streamlit>=1.41.1",
+    "streamlit-pydantic>=0.6.0",
     "transformers>=4.48.1",
+]
+
+[tool.ruff]
+exclude = [".git", ".vscode", ".pytest_cache", ".mypy_cache", ".env"]
+line-length = 88
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3.4",
+    "pytest-mock>=3.14.0",
 ]
